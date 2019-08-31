@@ -1,0 +1,37 @@
+- name: add nginx user
+  user:
+    name: nginx
+
+- name: install EPEL (Extra Packages for Enterprise Linux)
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - epel-release
+
+- name: install nginx
+  yum:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: create sites-enabled dir
+  file:
+    name: /etc/nginx/sites-available
+    state: directory
+
+- name: start nginx
+  service:
+    name: nginx
+    enabled: yes
+
+- name: set nginx config file
+  template:
+    src: univents.conf.j2
+    dest: /etc/nginx/sites-available/univents.jp
+
+- name: set nginx config file
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - restart nginx

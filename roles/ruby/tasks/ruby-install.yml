@@ -1,0 +1,50 @@
+- name: install build depends by Ruby # ref: https://github.com/rbenv/ruby-build/wiki
+  yum: name={{ item }} state=present
+  with_items:
+    - gcc
+    - bzip2
+    - openssl-devel
+    - libyaml-devel
+    - libffi-devel
+    - readline-devel
+    - zlib-devel
+    - gdbm-devel
+    - ncurses-devel
+    - make
+  sudo: true
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: update env var
+  shell: source ~/.bash_profile
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: check ruby rbenv installed
+  shell: cd; bash -lc "rbenv versions | grep {{ ruby_version }} | tr '*' ' ' | sed -e 's/\s\+//' | cut -f1 -d' '"
+  register: ruby_installed
+  ignore_errors: yes
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: rbenv install {{ ruby_version }}
+  shell: /bin/bash -lc "rbenv install {{ ruby_version }} && rbenv rehash && rbenv global {{ ruby_version }}"
+  when: ruby_installed.stdout != ruby_version
+  tags:
+    - ruby
+    - ruby:install
+    - install
+
+- name: rbenv global {{ ruby_version }}
+  shell: /bin/bash -lc "rbenv global  {{ ruby_version }}"
+  when: ruby_installed.stdout != ruby_version
+  tags:
+    - ruby
+    - ruby:install
+    - install

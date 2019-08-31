@@ -1,0 +1,7 @@
+# あとでvaultにする
+# https://qiita.com/yteraoka/items/d18e3c353b6e15ca84a8
+
+# for postgres
+db_postgres_password: 'testpassword'
+db_user: 'rails'
+db_password: 'testpassword'

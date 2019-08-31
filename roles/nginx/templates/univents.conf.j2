@@ -1,0 +1,28 @@
+server {
+    listen 80;
+    server_name univents.jp;
+
+    return 301 https://univents.jp$request_uri;
+
+}
+
+server {
+    listen 443;
+    server_name univents.jp;
+
+    access_log /var/log/nginx/univents.jp.access.log;
+
+    ssl                  on;
+    ssl_protocols        TLSv1 TLSv1.1 TLSv1.2;
+    ssl_certificate_key  /etc/nginx/ssl/cert.key;
+    ssl_certificate      /etc/nginx/ssl/cert.pem;
+
+    location ^~ /.well-known/pki-validation {
+        root /var/www;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_set_header X-Forwarded-Host $host;
+    }
+}

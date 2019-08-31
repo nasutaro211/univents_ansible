@@ -1,0 +1,9 @@
+# - name: install certbot
+#   yum:
+#    name: ['epel-release', 'certbot']
+#    state: installed
+#   tags:
+#     - ssl
+#
+# - name: Attempt to get the certificate using the webroot authenticator
+#   command: certbot certonly --webroot -w /var/www -d "{{domain}}" -d www."{{domain}}"

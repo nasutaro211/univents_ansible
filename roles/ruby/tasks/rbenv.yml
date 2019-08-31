@@ -1,0 +1,19 @@
+- name: install git
+  yum: name=git
+  tags:
+    - ruby
+    - rbenv
+
+- name: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv
+  command: git clone https://github.com/sstephenson/rbenv.git ~/.rbenv creates=~/.rbenv
+  tags:
+    - ruby
+    - rbenv
+
+- name: add rbenv initialization
+  lineinfile:
+    dest: ~/.bashrc
+    line: "{{ item }}"
+  with_items:
+    - export PATH="${HOME}/.rbenv/bin:$PATH"
+    - eval "$(rbenv init -)"

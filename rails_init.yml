@@ -1,0 +1,14 @@
+- hosts: test_servers
+  roles:
+    - ruby
+    - postgresql
+    - rails
+    - nginx
+    # - ssl
+  vars:
+    # for ruby
+    ruby_version: 2.5.0
+    rails_version: 5.2.3
+    # for ssl
+    domain: univents.jp
+  vars_files: private.yml
